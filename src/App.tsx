@@ -1,25 +1,69 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import {
+  Container,
+  Box,
+  Typography,
+  ThemeProvider,
+  createTheme,
+  CssBaseline,
+  AppBar,
+} from "@mui/material";
+import PayForm from "./components/PayForm";
+import ResultsView from "./components/ResultsView";
+import { useAppSelector } from "./app/hooks";
+
+const theme = createTheme({
+  typography: {
+    fontFamily: [
+      "-apple-system",
+      "BlinkMacSystemFont",
+      '"Segoe UI"',
+      "Roboto",
+      '"Helvetica Neue"',
+      "Arial",
+      "sans-serif",
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(","),
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          margin: "28px",
+        },
+      },
+    },
+  },
+});
 
 function App() {
+  const { salary, weeks, percentage, statutory } = useAppSelector(
+    (state) => state.maternity
+  );
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <header>
+        <Box textAlign="center" sx={{ margin: "28px" }}>
+          <AppBar position="static">
+            <Typography variant="h3" component="h1">
+              Maternity Pay Calculator
+            </Typography>
+          </AppBar>
+        </Box>
       </header>
-    </div>
+      <Container maxWidth="md">
+        {salary && weeks && percentage && statutory ? (
+          <ResultsView />
+        ) : (
+          <PayForm />
+        )}
+      </Container>
+    </ThemeProvider>
   );
 }
 
