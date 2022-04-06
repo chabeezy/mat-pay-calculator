@@ -36,6 +36,13 @@ const theme = createTheme({
         },
       },
     },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          margin: "14px",
+        },
+      },
+    },
   },
 });
 

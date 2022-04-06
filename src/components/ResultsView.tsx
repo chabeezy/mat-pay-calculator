@@ -40,7 +40,10 @@ interface Theme {
       common: {
         black: string;
         white: string;
-      };
+      },
+      primary: {
+        light: string;
+      },
       action: {
         hover: string;
       };
@@ -50,7 +53,7 @@ interface Theme {
 
 const StyledTableCell = styled(TableCell)(({ theme }: Theme) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
+    backgroundColor: theme.palette.primary.light,
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {

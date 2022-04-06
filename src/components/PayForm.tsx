@@ -104,7 +104,8 @@ const PayForm = () => {
       <p>
         A super simple maternity pay calculator. This calculator is designed for
         use by people who are paid monthly, and are looking to see how much they
-        will be paid over the course of their maternity leave
+        will be paid over the course of their maternity leave in a 'contract
+        language' friendly way
       </p>
       <form data-testid="PayForm" onSubmit={handleSubmit} onReset={handleReset}>
         <FormControl>
