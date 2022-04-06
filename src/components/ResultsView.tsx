@@ -1,4 +1,4 @@
-import React, { FormEvent } from "react";
+import React from "react";
 import { styled } from "@mui/material/styles";
 import { salaryWithMonths } from "../model/calculateSalary";
 import { useAppSelector, useAppDispatch } from "../app/hooks";
@@ -40,10 +40,10 @@ interface Theme {
       common: {
         black: string;
         white: string;
-      },
+      };
       primary: {
         light: string;
-      },
+      };
       action: {
         hover: string;
       };
@@ -124,7 +124,7 @@ const ResultsView = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Box textAlign="center" >
+      <Box textAlign="center">
         <Button
           name="reset"
           data-testid="reset"

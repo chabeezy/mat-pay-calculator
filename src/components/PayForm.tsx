@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useState, FormEvent, FocusEvent } from "react";
-import { InputLabel, Button, Box, FormControl, TextField } from "@mui/material";
+import { Button, Box, FormControl, TextField } from "@mui/material";
 import { useAppDispatch } from "../app/hooks";
 import { setValues } from "../features/maternitySlice";
 import { required, hasError } from "../model/formValidation";
