@@ -1,19 +1,17 @@
 import React from "react";
-import { styled } from "@mui/material/styles";
 import { salaryWithMonths } from "../model/calculateSalary";
 import { useAppSelector, useAppDispatch } from "../app/hooks";
 import { setValues } from "../features/maternitySlice";
 import {
   Table,
   TableHead,
-  TableRow,
   TableBody,
   Paper,
   TableContainer,
   Button,
   Box,
 } from "@mui/material";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import { StyledTableCell, StyledTableRow } from "../styles/theme";
 
 export interface SalaryDetails {
   month: Months;
@@ -34,47 +32,10 @@ export type Months =
   | "November"
   | "December";
 
-interface Theme {
-  theme: {
-    palette: {
-      common: {
-        black: string;
-        white: string;
-      };
-      primary: {
-        light: string;
-      };
-      action: {
-        hover: string;
-      };
-    };
-  };
-}
-
-const StyledTableCell = styled(TableCell)(({ theme }: Theme) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.primary.light,
-    color: theme.palette.common.white,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }: Theme) => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
-  },
-  // hide last border
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
-}));
-
 const ResultsView = () => {
   const dispatch = useAppDispatch();
 
-  const { salary, weeks, percentage, statutory } = useAppSelector(
+  const { salary, weeks, percentage, statutory, studentLoan } = useAppSelector(
     (state) => state.maternity
   );
 
@@ -112,7 +73,8 @@ const ResultsView = () => {
               Number(salary),
               Number(percentage),
               Number(weeks),
-              Number(statutory)
+              Number(statutory),
+              Number(studentLoan)
             ).map((result) => (
               <StyledTableRow key={result.month}>
                 <StyledTableCell align="center">{result.month}</StyledTableCell>

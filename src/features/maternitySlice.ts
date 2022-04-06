@@ -5,6 +5,7 @@ interface MaternityState {
   weeks: string;
   percentage: string;
   statutory: string;
+  studentLoan: string;
 }
 
 const initialState: MaternityState = {
@@ -12,6 +13,7 @@ const initialState: MaternityState = {
   weeks: "",
   percentage: "",
   statutory: "",
+  studentLoan: "0"
 };
 
 

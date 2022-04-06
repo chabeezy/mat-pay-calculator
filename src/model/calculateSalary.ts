@@ -40,10 +40,14 @@ export const theNext12Months = (startingMonth: number): MonthsResult[] => {
   return result;
 };
 
-export const salaryWithDeductions = (salary: number, percentage: number) => {
+export const salaryWithDeductions = (
+  salary: number,
+  percentage: number,
+  studentLoan: number
+) => {
   const options = {
     age: 30,
-    studentLoanPlan: 0,
+    studentLoanPlan: studentLoan,
     blind: false,
     pensionPercentage: 0,
   };
@@ -62,10 +66,11 @@ export const numberOfMonthsFromWeeks = (weeks: number) => {
 export const salaryByMonth = (
   salary: number,
   percentage: number,
-  weeks: number
+  weeks: number,
+  studentLoan: number
 ): SalaryResult[] => {
   const numberOfMonthsAtPercentagePay = numberOfMonthsFromWeeks(weeks);
-  const totalSalary = salaryWithDeductions(salary, percentage);
+  const totalSalary = salaryWithDeductions(salary, percentage, studentLoan);
 
   let salaryResult: SalaryResult[] = [];
 
@@ -98,10 +103,11 @@ export const salaryWithMonths = (
   salary: number,
   percentage: number,
   weeks: number,
-  statWeeks: number
+  statWeeks: number,
+  studentLoan: number
 ): SalaryDetails[] => {
   const monthResult = theNext12Months(months);
-  const salaryResult = salaryByMonth(salary, percentage, weeks);
+  const salaryResult = salaryByMonth(salary, percentage, weeks, studentLoan);
   const statResult = addStatutoryPay(statWeeks);
 
   let salaryResults: SalaryDetails[] = [];

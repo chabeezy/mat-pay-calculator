@@ -34,7 +34,6 @@ describe("PayForm", () => {
     expect(screen.getByText("Salary is required")).toBeInTheDocument();
   });
 
- 
   it("only allows numeric values into the salary entry box", () => {
     const salaryEntryBox = setup("What is your current salary?");
 
@@ -69,15 +68,18 @@ describe("PayForm", () => {
     expect(screen.getByText("Pay percentage is required")).toBeInTheDocument();
   });
 
- 
   it("allow you to enter x weeks at statutory maternity pay", () => {
-    const secondWeeksInput = setup("How many weeks will you receive statutory pay?");
+    const secondWeeksInput = setup(
+      "How many weeks will you receive statutory pay?"
+    );
 
     expect(secondWeeksInput).toBeInTheDocument();
   });
 
   it("display an error after blur when stat maternity pay entry is blank", () => {
-    const secondWeeksInput = setup("How many weeks will you receive statutory pay?");
+    const secondWeeksInput = setup(
+      "How many weeks will you receive statutory pay?"
+    );
 
     fireEvent.blur(secondWeeksInput);
 

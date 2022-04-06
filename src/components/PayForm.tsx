@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useState, FormEvent, FocusEvent } from "react";
-import { Button, Box, FormControl, TextField } from "@mui/material";
+import { Button, Box, FormControl, TextField, MenuItem } from "@mui/material";
 import { useAppDispatch } from "../app/hooks";
 import { setValues } from "../features/maternitySlice";
 import { required, hasError } from "../model/formValidation";
@@ -9,6 +9,7 @@ interface Maternity {
   weeks: string;
   percentage: string;
   statutory: string;
+  studentLoan: string;
 }
 
 export interface ValidationErrors {
@@ -16,6 +17,7 @@ export interface ValidationErrors {
   weeks?: string;
   percentage?: string;
   statutory?: string;
+  studentLoan?: string;
 }
 
 const PayForm = () => {
@@ -24,6 +26,7 @@ const PayForm = () => {
     weeks: "",
     percentage: "",
     statutory: "",
+    studentLoan: "0",
   });
 
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
@@ -43,6 +46,7 @@ const PayForm = () => {
       weeks: "",
       percentage: "",
       statutory: "",
+      studentLoan: "0",
     });
 
     setValidationErrors({});
@@ -72,6 +76,7 @@ const PayForm = () => {
       weeks: required("Number of weeks is required"),
       percentage: required("Pay percentage is required"),
       statutory: required("statutory maternity pay period is required"),
+      studentLoan: required("Student loan is required"),
     };
 
     const result = validators[event.target.name as keyof ValidationErrors](
@@ -162,6 +167,18 @@ const PayForm = () => {
             error={isError("statutory")}
           />
           {renderError("statutory")}
+          <TextField
+            label="Student Loan"
+            value={maternity.studentLoan}
+            onChange={handleChange as any}
+            name="studentLoan"
+            data-testid="studentLoan"
+            select
+          >
+            <MenuItem value={"0"}>No student loan</MenuItem>
+            <MenuItem value={"1"}>Plan 1</MenuItem>
+            <MenuItem value={"2"}>Plan 2</MenuItem>
+          </TextField>
           <Box textAlign="center">
             <Button
               type="submit"

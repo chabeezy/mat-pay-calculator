@@ -5,46 +5,13 @@ import {
   Box,
   Typography,
   ThemeProvider,
-  createTheme,
   CssBaseline,
   AppBar,
 } from "@mui/material";
 import PayForm from "./components/PayForm";
 import ResultsView from "./components/ResultsView";
 import { useAppSelector } from "./app/hooks";
-
-const theme = createTheme({
-  typography: {
-    fontFamily: [
-      "-apple-system",
-      "BlinkMacSystemFont",
-      '"Segoe UI"',
-      "Roboto",
-      '"Helvetica Neue"',
-      "Arial",
-      "sans-serif",
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-    ].join(","),
-  },
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          margin: "28px",
-        },
-      },
-    },
-    MuiTextField: {
-      styleOverrides: {
-        root: {
-          margin: "14px",
-        },
-      },
-    },
-  },
-});
+import { theme } from "./styles/theme";
 
 function App() {
   const { salary, weeks, percentage, statutory } = useAppSelector(

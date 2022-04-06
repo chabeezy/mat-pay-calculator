@@ -257,4 +257,23 @@ describe("salaryWithMonths", () => {
       { month: "March", salary: 678.34 },
     ]);
   });
+
+  it("deducts plan 1 student loan", () => {
+    const salaryWithMonth = salaryWithMonths(2, 40000, 100, 26, 13, 1);
+
+    expect(salaryWithMonth).toEqual([
+      { month: "April", salary: 2420.4 },
+      { month: "May", salary: 2420.4 },
+      { month: "June", salary: 2420.4 },
+      { month: "July", salary: 2420.4 },
+      { month: "August", salary: 2420.4 },
+      { month: "September", salary: 2420.4 },
+      { month: "October", salary: 678.34 },
+      { month: "November", salary: 678.34 },
+      { month: "December", salary: 678.34 },
+      { month: "January", salary: 0 },
+      { month: "February", salary: 0 },
+      { month: "March", salary: 0 },
+    ]);
+  });
 });
