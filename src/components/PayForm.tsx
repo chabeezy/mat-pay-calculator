@@ -1,10 +1,17 @@
 import React, { ChangeEvent, useState, FormEvent, FocusEvent } from "react";
-import { Button, Box, FormControl, TextField, MenuItem } from "@mui/material";
+import {
+  Button,
+  Box,
+  FormControl,
+  TextField,
+  MenuItem,
+  FormControlLabel,
+  Checkbox,
+} from "@mui/material";
 import { useAppDispatch } from "../app/hooks";
 import { setValues } from "../features/maternitySlice";
 import { required, hasError } from "../model/formValidation";
-import { Maternity, MaternityValidationErrors } from "../types/maternity"
-
+import { Maternity, MaternityValidationErrors } from "../types/maternity";
 
 const PayForm = () => {
   const [maternity, setMaternity] = useState<Maternity>({
@@ -13,12 +20,12 @@ const PayForm = () => {
     percentage: "",
     statutory: "",
     studentLoan: "0",
-    maternityMonth: "0"
+    maternityMonth: "0",
+    statOnlySelected: false
   });
 
-  const [validationErrors, setValidationErrors] = useState<MaternityValidationErrors>(
-    {}
-  );
+  const [validationErrors, setValidationErrors] =
+    useState<MaternityValidationErrors>({});
 
   const dispatch = useAppDispatch();
 
@@ -27,6 +34,8 @@ const PayForm = () => {
     dispatch(setValues(maternity));
   };
 
+  const [checked, setChecked] = useState(false);
+
   const handleReset = (event: FormEvent<HTMLFormElement>) => {
     setMaternity({
       salary: "",
@@ -34,7 +43,8 @@ const PayForm = () => {
       percentage: "",
       statutory: "",
       studentLoan: "0",
-      maternityMonth: "0"
+      maternityMonth: "0",
+      statOnlySelected: false
     });
 
     setValidationErrors({});
@@ -47,6 +57,33 @@ const PayForm = () => {
       ...maternity,
       [name]: value,
     }));
+  };
+
+  const handleChangeStatutoryMaternity = (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
+    const { checked } = event.target;
+
+    setChecked(checked);
+    if (checked === true) {
+      setMaternity((maternity) => ({
+        ...maternity,
+        weeks: "6",
+        percentage: "90",
+        statutory: "33",
+        statOnlySelected: true
+      }));
+    } else {
+      setMaternity({
+        salary: "",
+        weeks: "",
+        percentage: "",
+        statutory: "",
+        studentLoan: "0",
+        maternityMonth: "0",
+        statOnlySelected: false
+      });
+    }
   };
 
   const canSubmit = (): boolean => {
@@ -67,9 +104,9 @@ const PayForm = () => {
       studentLoan: required("Student loan is required"),
     };
 
-    const result = validators[event.target.name as keyof MaternityValidationErrors](
-      event.target.value
-    );
+    const result = validators[
+      event.target.name as keyof MaternityValidationErrors
+    ](event.target.value);
 
     setValidationErrors({ ...validationErrors, [event.target.name]: result });
   };
@@ -116,6 +153,15 @@ const PayForm = () => {
             error={isError("salary")}
           />
           {renderError("salary")}
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={checked}
+                onChange={handleChangeStatutoryMaternity}
+              />
+            }
+            label="I get statutory maternity pay"
+          />
           <TextField
             id="weeks"
             name="weeks"
@@ -127,6 +173,7 @@ const PayForm = () => {
             onBlur={handleBlur}
             color="primary"
             error={isError("weeks")}
+            disabled={checked}
           />
           {renderError("weeks")}
           <TextField
@@ -140,6 +187,7 @@ const PayForm = () => {
             onBlur={handleBlur}
             color="primary"
             error={isError("percentage")}
+            disabled={checked}
           />
           {renderError("percentage")}
           <TextField
@@ -153,6 +201,7 @@ const PayForm = () => {
             onBlur={handleBlur}
             color="primary"
             error={isError("statutory")}
+            disabled={checked}
           />
           {renderError("statutory")}
           <TextField
@@ -163,6 +212,7 @@ const PayForm = () => {
             data-testid="selectStudentLoan"
             inputProps={{ id: "studentLoan", "data-testid": "studentLoan" }}
             select
+            autoFocus={checked}
           >
             <MenuItem value={"0"}>No student loan</MenuItem>
             <MenuItem value={"1"}>Plan 1</MenuItem>

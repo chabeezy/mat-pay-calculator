@@ -9,6 +9,11 @@ interface SalaryResult {
   salary: number;
 }
 
+interface Salary {
+  monthly: number;
+  weekly: number;
+}
+
 export const theNext12Months = (startingMonth: number): MonthsResult[] => {
   const months: Months[] = [
     "January",
@@ -44,7 +49,7 @@ export const salaryWithDeductions = (
   salary: number,
   percentage: number,
   studentLoan: number
-) => {
+): Salary => {
   const options = {
     age: 30,
     studentLoanPlan: studentLoan,
@@ -56,7 +61,13 @@ export const salaryWithDeductions = (
 
   const salaryAfterTax = TaxCalculator(maternitySalary, options);
 
-  return Number(salaryAfterTax.getTaxBreakdown().netIncome.monthly);
+  const monthly = Number(salaryAfterTax.getTaxBreakdown().netIncome.monthly);
+  const weekly = Number(salaryAfterTax.getTaxBreakdown().netIncome.weekly);
+
+  return {
+    monthly,
+    weekly,
+  };
 };
 
 export const numberOfMonthsFromWeeks = (weeks: number) => {
@@ -70,13 +81,13 @@ export const salaryByMonth = (
   studentLoan: number
 ): SalaryResult[] => {
   const numberOfMonthsAtPercentagePay = numberOfMonthsFromWeeks(weeks);
-  const totalSalary = salaryWithDeductions(salary, percentage, studentLoan);
+  const { monthly } = salaryWithDeductions(salary, percentage, studentLoan);
 
   let salaryResult: SalaryResult[] = [];
 
   for (let i = 1; i <= numberOfMonthsAtPercentagePay; i++) {
     salaryResult.push({
-      salary: totalSalary,
+      salary: monthly,
     });
   }
 
@@ -98,24 +109,70 @@ export const addStatutoryPay = (statWeeks: number): SalaryResult[] => {
   return salaryResult;
 };
 
+export const statOnly = (weeklySalary: number) => {
+  const longTermStatPay = 156.66;
+  const firstMonth = Number((weeklySalary * 4.3).toFixed(2));
+  const secondMonth = Number(
+    (weeklySalary * 1.7 + longTermStatPay * 2.6).toFixed(2)
+  );
+
+  let salaryResults: SalaryResult[] = [];
+
+  salaryResults.push({ salary: firstMonth }, { salary: secondMonth });
+
+  return salaryResults;
+};
+
+export const calculateInitialPeriod = (
+  salary: number,
+  percentage: number,
+  weeks: number,
+  studentLoan: number,
+  statOnlySelected: boolean = false,
+  months: number
+) => {
+  let salaryResults: SalaryDetails[] = [];
+  const monthResult = theNext12Months(months);
+
+  if (statOnlySelected === false) {
+    const salaryResult = salaryByMonth(salary, percentage, weeks, studentLoan);
+
+    salaryResult.map((salaryObject, index) => {
+      return salaryResults.push({ ...salaryObject, ...monthResult[index] });
+    });
+  } else {
+    const { weekly } = salaryWithDeductions(salary, percentage, studentLoan);
+    const statOnlyResult = statOnly(weekly);
+
+    statOnlyResult.map((salaryObject, index) => {
+      return salaryResults.push({ ...salaryObject, ...monthResult[index] });
+    });
+  }
+
+  return salaryResults;
+};
+
 export const salaryWithMonths = (
   months: number,
   salary: number,
   percentage: number,
   weeks: number,
   statWeeks: number,
-  studentLoan: number
+  studentLoan: number,
+  statOnlySelected: boolean = false
 ): SalaryDetails[] => {
   const monthResult = theNext12Months(months);
-  const salaryResult = salaryByMonth(salary, percentage, weeks, studentLoan);
+
   const statResult = addStatutoryPay(statWeeks);
 
-  let salaryResults: SalaryDetails[] = [];
-
-  //add salary
-  salaryResult.map((salaryObject, index) => {
-    return salaryResults.push({ ...salaryObject, ...monthResult[index] });
-  });
+  let salaryResults: SalaryDetails[] = calculateInitialPeriod(
+    salary,
+    percentage,
+    weeks,
+    studentLoan,
+    statOnlySelected,
+    months
+  );
 
   let statPayFrom: number = salaryResults.length;
   //add mat pay

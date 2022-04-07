@@ -175,4 +175,62 @@ describe("PayForm", () => {
 
     expect(submitButton).not.toBeDisabled();
   });
+
+  test("user can see a option top select standard statutory pay", () => {
+    const standardStatutory = setup("I get statutory maternity pay");
+
+    expect(standardStatutory).toBeInTheDocument();
+  });
+
+  test("user can set that they get statutory maternity pay", () => {
+    const standardStatutory = setup("I get statutory maternity pay");
+    expect(standardStatutory.checked).toEqual(false);
+
+    fireEvent.click(standardStatutory);
+
+    expect(standardStatutory.checked).toEqual(true);
+  });
+
+  test("when user selects statutory maternity pay, weeks field sets to 6 and read only", () => {
+    const standardStatutory = setup("I get statutory maternity pay");
+    const firstWeeksInput = screen.getByLabelText(
+      "How many weeks will you receive this?"
+    );
+    
+    fireEvent.click(standardStatutory);
+
+    expect(firstWeeksInput.value).toBe("6");
+    expect(firstWeeksInput).toHaveAttribute("disabled");
+
+    
+    expect(standardStatutory.checked).toEqual(true);
+  });
+  test("when user selects statutory maternity pay, percentage field sets to 90 and read only", () => {
+    const standardStatutory = setup("I get statutory maternity pay");
+    const percentage = screen.getByLabelText(
+      "What percentage will you receive?"
+    );
+    
+    fireEvent.click(standardStatutory);
+
+    expect(percentage.value).toBe("90");
+    expect(percentage).toHaveAttribute("disabled");
+
+    
+    expect(standardStatutory.checked).toEqual(true);
+  });
+  test("when user selects statutory maternity pay, statutory weeks are set to 33", () => {
+    const standardStatutory = setup("I get statutory maternity pay");
+    const statWeeks = screen.getByLabelText(
+      "How many weeks will you receive statutory pay?"
+    );
+    
+    fireEvent.click(standardStatutory);
+
+    expect(statWeeks.value).toBe("33");
+    expect(statWeeks).toHaveAttribute("disabled");
+
+    
+    expect(standardStatutory.checked).toEqual(true);
+  });
 });

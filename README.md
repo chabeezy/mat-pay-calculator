@@ -1,10 +1,4 @@
 # Maternity Pay Calculator
 
-An exceptionally rough looking app that will tell you how little maternity pay you will get over a period of 12 months.
-
-_TODO_
-
-- Student Loans
-- New NI
-- When does your mat leave start?
+An app that allows you to see how much maternity pay you'll be entitled to on a monthly basis. The general idea is you could input the language that you typically see in a contract, then convert it to how you typically get paid. 
 

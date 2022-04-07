@@ -5,6 +5,7 @@ export interface Maternity {
     statutory: string;
     studentLoan: string;
     maternityMonth: string;
+    statOnlySelected: boolean
   }
 
   export interface MaternityValidationErrors {

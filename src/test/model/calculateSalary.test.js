@@ -5,6 +5,7 @@ import {
   salaryByMonth,
   addStatutoryPay,
   salaryWithMonths,
+  statOnly,
 } from "../../model/calculateSalary";
 
 describe("theNext12Months", () => {
@@ -94,28 +95,34 @@ describe("theNext12Months", () => {
 });
 
 describe("salaryWithDeductions", () => {
-  it("calculates correct tax for a salary of 15000", () => {
-    const result = salaryWithDeductions(15000, 100);
+  it("calculates correct tax for a month,  salary of 15000", () => {
+    const { monthly } = salaryWithDeductions(15000, 100);
 
-    expect(result).toBe(1154.52);
+    expect(monthly).toBe(1154.52);
   });
 
-  it("calculates correct tax for a salary of 25000", () => {
-    const result = salaryWithDeductions(25000, 100);
+  it("calculates correct tax for a week,  salary of 15000", () => {
+    const { weekly } = salaryWithDeductions(15000, 100);
 
-    expect(result).toBe(1721.18);
+    expect(weekly).toBe(266.43);
   });
 
-  it("calculates correct tax for a salary of 50000", () => {
-    const result = salaryWithDeductions(50000, 100);
+  it("calculates correct tax for a month, salary of 25000", () => {
+    const { monthly } = salaryWithDeductions(25000, 100);
 
-    expect(result).toBe(3137.85);
+    expect(monthly).toBe(1721.18);
   });
 
-  it("calculates correct tax for a salary of 50000 at 90%", () => {
-    const result = salaryWithDeductions(50000, 90);
+  it("calculates correct tax for a month, salary of 50000", () => {
+    const { monthly } = salaryWithDeductions(50000, 100);
 
-    expect(result).toBe(2854.52);
+    expect(monthly).toBe(3137.85);
+  });
+
+  it("calculates correct tax for a month, salary of 50000 at 90%", () => {
+    const { monthly } = salaryWithDeductions(50000, 90);
+
+    expect(monthly).toBe(2854.52);
   });
 });
 
@@ -275,5 +282,35 @@ describe("salaryWithMonths", () => {
       { month: "February", salary: 0 },
       { month: "March", salary: 0 },
     ]);
+  });
+  it("supports stat only", () => {
+    const salaryWithMonth = salaryWithMonths(2, 40000, 90, 6, 33, 0, true);
+
+    expect(salaryWithMonth).toEqual([
+      { month: "April", salary: 2326.47 },
+      { month: "May", salary: 1327.08 },
+      { month: "June", salary: 678.34 },
+      { month: "July", salary: 678.34 },
+      { month: "August", salary: 678.34 },
+      { month: "September", salary: 678.34 },
+      { month: "October", salary: 678.34 },
+      { month: "November", salary: 678.34 },
+      { month: "December", salary: 678.34 },
+      { month: "January", salary: 678.34 },
+      { month: "February", salary: 0 },
+      { month: "March", salary: 0 },
+    ]);
+  });
+});
+describe("statOnly", () => {
+  test("statOnly returns expected values for a weekly salary of 266.43", () => {
+    const monthlySalary = statOnly(266.43);
+
+    expect(monthlySalary).toEqual([{ salary: 1145.65 }, { salary: 860.25 }]);
+  });
+  test("statOnly returns expected values for a weekly salary of 1000", () => {
+    const monthlySalary = statOnly(1000);
+
+    expect(monthlySalary).toEqual([{ salary: 4300 }, { salary: 2107.32 }]);
   });
 });

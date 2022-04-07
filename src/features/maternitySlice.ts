@@ -7,7 +7,8 @@ const initialState: Maternity = {
   percentage: "",
   statutory: "",
   studentLoan: "0",
-  maternityMonth: "0"
+  maternityMonth: "0",
+  statOnlySelected: false
 };
 
 

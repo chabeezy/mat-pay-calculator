@@ -50,6 +50,13 @@ export const theme = createTheme({
         },
       },
     },
+    MuiFormControlLabel: {
+      styleOverrides: {
+        root: {
+          margin: "14px",
+        },
+      },
+    },
   },
 });
 

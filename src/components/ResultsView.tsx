@@ -35,8 +35,15 @@ export type Months =
 const ResultsView = () => {
   const dispatch = useAppDispatch();
 
-  const { salary, weeks, percentage, statutory, studentLoan, maternityMonth } =
-    useAppSelector((state) => state.maternity);
+  const {
+    salary,
+    weeks,
+    percentage,
+    statutory,
+    studentLoan,
+    maternityMonth,
+    statOnlySelected,
+  } = useAppSelector((state) => state.maternity);
 
   const handleReset = () => {
     dispatch(
@@ -73,7 +80,8 @@ const ResultsView = () => {
               Number(percentage),
               Number(weeks),
               Number(statutory),
-              Number(studentLoan)
+              Number(studentLoan),
+              statOnlySelected
             ).map((result) => (
               <StyledTableRow key={result.month}>
                 <StyledTableCell align="center">{result.month}</StyledTableCell>
