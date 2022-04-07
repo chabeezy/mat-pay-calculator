@@ -1,19 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { Maternity } from "../types/maternity"
 
-interface MaternityState {
-  salary: string;
-  weeks: string;
-  percentage: string;
-  statutory: string;
-  studentLoan: string;
-}
-
-const initialState: MaternityState = {
+const initialState: Maternity = {
   salary: "",
   weeks: "",
   percentage: "",
   statutory: "",
-  studentLoan: "0"
+  studentLoan: "0",
+  maternityMonth: "0"
 };
 
 

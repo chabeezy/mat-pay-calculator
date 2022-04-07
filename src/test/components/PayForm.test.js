@@ -3,7 +3,6 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { store } from "../../app/store";
 import PayForm from "../../components/PayForm";
-import userEvent from "@testing-library/user-event";
 
 describe("PayForm", () => {
   const setup = (label) => {
@@ -16,8 +15,6 @@ describe("PayForm", () => {
     const input = screen.getByLabelText(label);
     return input;
   };
-
-  const user = userEvent.setup();
 
   it("display a salary entry box with a label", () => {
     const salaryEntryBox = setup("What is your current salary?");
@@ -97,6 +94,43 @@ describe("PayForm", () => {
     const submitButton = screen.getByText("Calculate");
 
     expect(submitButton).toBeDisabled();
+  });
+
+  test("user can see a student loan option", () => {
+    render(
+      <Provider store={store}>
+        <PayForm />
+      </Provider>
+    );
+
+    const studentLoan = screen.getByLabelText("Student Loan");
+
+    expect(studentLoan.textContent).toBe("No student loan");
+  });
+
+  test("user can select a different student loan", () => {
+    render(
+      <Provider store={store}>
+        <PayForm />
+      </Provider>
+    );
+
+    const studentLoan = screen.getByTestId("studentLoan");
+    expect(studentLoan).toHaveAttribute("value", "0");
+
+    fireEvent.change(studentLoan, { target: { value: "Plan 1" } });
+  });
+
+  test("user can select a maternity start month", () => {
+    render(
+      <Provider store={store}>
+        <PayForm />
+      </Provider>
+    );
+
+    const maternityMonth = screen.getByLabelText("Maternity leave starts in");
+
+    expect(maternityMonth.textContent).toBe("January");
   });
 
   it("user is prompted to enter text into field if left blank", () => {

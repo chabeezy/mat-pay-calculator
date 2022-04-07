@@ -7,6 +7,7 @@ it("should return the initial state", () => {
     statutory: "",
     weeks: "",
     studentLoan: "0",
+    maternityMonth: "0"
   });
 });
 
@@ -20,6 +21,7 @@ it("should handle maternity values being added", () => {
         statutory: "20",
         weeks: "10",
         studentLoan: "2",
+        maternityMonth: "6"
       })
     )
   ).toEqual({
@@ -28,5 +30,6 @@ it("should handle maternity values being added", () => {
     statutory: "20",
     weeks: "10",
     studentLoan: "2",
+    maternityMonth: "6"
   });
 });

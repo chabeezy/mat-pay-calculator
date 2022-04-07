@@ -3,22 +3,8 @@ import { Button, Box, FormControl, TextField, MenuItem } from "@mui/material";
 import { useAppDispatch } from "../app/hooks";
 import { setValues } from "../features/maternitySlice";
 import { required, hasError } from "../model/formValidation";
+import { Maternity, MaternityValidationErrors } from "../types/maternity"
 
-interface Maternity {
-  salary: string;
-  weeks: string;
-  percentage: string;
-  statutory: string;
-  studentLoan: string;
-}
-
-export interface ValidationErrors {
-  salary?: string;
-  weeks?: string;
-  percentage?: string;
-  statutory?: string;
-  studentLoan?: string;
-}
 
 const PayForm = () => {
   const [maternity, setMaternity] = useState<Maternity>({
@@ -27,9 +13,10 @@ const PayForm = () => {
     percentage: "",
     statutory: "",
     studentLoan: "0",
+    maternityMonth: "0"
   });
 
-  const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
+  const [validationErrors, setValidationErrors] = useState<MaternityValidationErrors>(
     {}
   );
 
@@ -47,6 +34,7 @@ const PayForm = () => {
       percentage: "",
       statutory: "",
       studentLoan: "0",
+      maternityMonth: "0"
     });
 
     setValidationErrors({});
@@ -79,7 +67,7 @@ const PayForm = () => {
       studentLoan: required("Student loan is required"),
     };
 
-    const result = validators[event.target.name as keyof ValidationErrors](
+    const result = validators[event.target.name as keyof MaternityValidationErrors](
       event.target.value
     );
 
@@ -90,7 +78,7 @@ const PayForm = () => {
     if (hasError(validationErrors, fieldName)) {
       return (
         <span className="error">
-          {validationErrors[fieldName as keyof ValidationErrors]}
+          {validationErrors[fieldName as keyof MaternityValidationErrors]}
         </span>
       );
     }
@@ -170,14 +158,35 @@ const PayForm = () => {
           <TextField
             label="Student Loan"
             value={maternity.studentLoan}
-            onChange={handleChange as any}
+            onChange={handleChange}
             name="studentLoan"
-            data-testid="studentLoan"
+            data-testid="selectStudentLoan"
+            inputProps={{ id: "studentLoan", "data-testid": "studentLoan" }}
             select
           >
             <MenuItem value={"0"}>No student loan</MenuItem>
             <MenuItem value={"1"}>Plan 1</MenuItem>
             <MenuItem value={"2"}>Plan 2</MenuItem>
+          </TextField>
+          <TextField
+            label="Maternity leave starts in"
+            value={maternity.maternityMonth}
+            onChange={handleChange}
+            name="maternityMonth"
+            select
+          >
+            <MenuItem value={"0"}>January</MenuItem>
+            <MenuItem value={"1"}>February</MenuItem>
+            <MenuItem value={"2"}>March</MenuItem>
+            <MenuItem value={"3"}>April</MenuItem>
+            <MenuItem value={"4"}>May</MenuItem>
+            <MenuItem value={"5"}>June</MenuItem>
+            <MenuItem value={"6"}>July</MenuItem>
+            <MenuItem value={"7"}>August</MenuItem>
+            <MenuItem value={"8"}>September</MenuItem>
+            <MenuItem value={"9"}>October</MenuItem>
+            <MenuItem value={"10"}>November</MenuItem>
+            <MenuItem value={"11"}>December</MenuItem>
           </TextField>
           <Box textAlign="center">
             <Button

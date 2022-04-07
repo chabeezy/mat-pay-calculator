@@ -1,4 +1,4 @@
-import { ValidationErrors } from "../components/PayForm"
+import { MaternityValidationErrors } from "../types/maternity";
 
 export const required =
   (description: string) =>
@@ -6,6 +6,7 @@ export const required =
     !value || value.trim() === "" ? description : undefined;
 
 export const hasError = (
-  validationErrors: ValidationErrors,
+  validationErrors: MaternityValidationErrors,
   fieldName: string
-) => validationErrors[fieldName as keyof ValidationErrors] !== undefined;
+) =>
+  validationErrors[fieldName as keyof MaternityValidationErrors] !== undefined;
